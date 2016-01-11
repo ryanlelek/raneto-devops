@@ -4,6 +4,10 @@ Raneto DevOps
 Easily configure a remote machine to host your Raneto documentation.  
 **Check out [AnsibleTutorials.com](http://www.ansibletutorials.com) for more DevOps scripts!**
 
+# Note!
+This repository is going to be sliced and diced into modules and then published to Ansible Galaxy.  
+If you like what you see, I'd suggest following me on my profile and/or sending me an email instead of starring the repo.  
+
 # Limitations
 - Requires Mac OS X (Tested with v10.9 Mavericks)
 - Tested only with Ubuntu v14.04
@@ -27,7 +31,7 @@ Easily configure a remote machine to host your Raneto documentation.
 From the project directory run:  
 `$ vagrant up`.  
 
-This will create a new VM on your location machine and configure it to run Raneto.  
+This will create a new VM on your local machine and configure it to run Raneto.  
 That's all you need to do to deploy locally.  
 **Check access with `$ curl -v -H "Host: devops.raneto.com" http://localhost:8888`**  
 If you want to, [set the domain in /etc/hosts](http://ubuntuforums.org/showthread.php?t=3407) to point to 127.0.0.1 to access in a browser
