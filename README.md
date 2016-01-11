@@ -18,8 +18,8 @@ Easily configure a remote machine to host your Raneto documentation.
 `$ brew install ansible`
 
 ## Ansible Dependencies
-`$ ansible-galaxy install nodesource.node`
-`$ ansible-galaxy install kamaln7.swapfile`
+`$ ansible-galaxy install nodesource.node`  
+`$ ansible-galaxy install kamaln7.swapfile`  
 
 # Usage
 
@@ -54,15 +54,17 @@ Here's a shorter version that does the same thing:
 ## 4) Adding your Raneto repository
 See the new [Raneto example](https://github.com/gilbitron/Raneto/tree/master/example) for how to structure your project.  
 It's a good idea to start a new Git repository (public or private) and commit your documentation files to that repository instead of directly to a cloned copy of Raneto.  
-To use your Raneto project's Git repository in this deplkoyment process:
-1. edit `deploy.yml` and add your Git repo address
-2. edit `deploy.yml` and change the domain `devops.raneto.com` to your (sub)domain
+To use your Raneto project's Git repository in this deplkoyment process:  
+
+1. edit `deploy.yml` and add your Git repo address  
+2. edit `deploy.yml` and change the domain `devops.raneto.com` to your (sub)domain  
 
 ## 5) Change Sudo Password (optional, recommended)
-Generate a password to be used on the machines:
-1. `$ brew install python`
-2. `$ pip install passlib`
-3. `$ python tools/password_hasher.py [new_password]`
+Generate a password to be used on the machines:  
+
+1. `$ brew install python`  
+2. `$ pip install passlib`  
+3. `$ python tools/password_hasher.py [new_password]`  
 
 Put the output in file `group_vars/all`.  
 __Note: Even if the password is the same, hashes will be different on each generation__
