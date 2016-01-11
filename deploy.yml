@@ -25,7 +25,7 @@
     - role: ./roles/nginx_site
       sudo: true
       nginx_root: raneto/public
-      nginx_domain: raneto.ryanlelek.com
+      nginx_domain: devops.raneto.com
       nginx_www: false
       nginx_ssl: false
       nodejs: true # Enables proxy
