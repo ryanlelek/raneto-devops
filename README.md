@@ -105,5 +105,6 @@ Remove Old Key:
 `$ vagrant destroy`
 
 ### SSH-ing into Vagrant:
-a) `ssh vagrant@127.0.0.1 -p 2222`
-b) `vagrant ssh`
+
+1. `ssh vagrant@127.0.0.1 -p 2222`  
+2. `vagrant ssh`
