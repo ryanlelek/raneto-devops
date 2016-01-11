@@ -27,7 +27,10 @@ Easily configure a remote machine to host your Raneto documentation.
 From the project directory run:  
 `$ vagrant up`.  
 
-This will create a new VM on your location machine and configure it to run Raneto.
+This will create a new VM on your location machine and configure it to run Raneto.  
+That's all you need to do to deploy locally.  
+**Check access with `$ curl -v -H "Host: devops.raneto.com" http://localhost:8888`**
+If you want to, [set the domain in /etc/hosts](http://ubuntuforums.org/showthread.php?t=3407) to point to 127.0.0.1 to access in a browser
 
 ## 2) Inventory Your Remote Machines
 I'm using DigitalOcean as my provider, and suggest using them for the easiest compatibility.  
@@ -51,7 +54,9 @@ Here's a shorter version that does the same thing:
 ## 4) Adding your Raneto repository
 See the new [Raneto example](https://github.com/gilbitron/Raneto/tree/master/example) for how to structure your project.  
 It's a good idea to start a new Git repository (public or private) and commit your documentation files to that repository instead of directly to a cloned copy of Raneto.  
-To use your Raneto project's Git repository in this deplkoyment process, edit `deploy.yml` with your repo address.
+To use your Raneto project's Git repository in this deplkoyment process:
+1. edit `deploy.yml` and add your Git repo address
+2. edit `deploy.yml` and change the domain `devops.raneto.com` to your (sub)domain
 
 ## 5) Change Sudo Password (optional, recommended)
 Generate a password to be used on the machines:
@@ -73,7 +78,7 @@ You might be accessing the machine via IP or a site domain that has not been con
 
 1. Don't use a browser, browsers will cache the redirect for a considerable amount of time. Use the terminal instead.
 2. Run this command to diagnose. Make sure the "Host" header is being set to one of the configured domains.  
-`$ curl -v -H "Host: www.yourdomain.com" http://127.0.0.1:8888`
+`$ curl -v -H "Host: devops.raneto.com" http://127.0.0.1:8888`
 
 ## Sudo Password
 The default sudo password is **`raneto`**
