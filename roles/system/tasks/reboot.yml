@@ -1,0 +1,16 @@
+---
+
+# Reference: https://support.ansible.com/hc/en-us/articles/201958037-Reboot-a-server-and-wait-for-it-to-come-back
+
+- name: Rebooting if needed...
+  sudo: yes
+  command: shutdown -r now removes=/var/run/reboot-required
+  async: 0
+  poll: 0
+  ignore_errors: true
+  register: restarted
+
+- name: Waiting for reboot...
+  include: reboot.wait.yml
+  sudo: no
+  when: restarted.changed

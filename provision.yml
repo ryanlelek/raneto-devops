@@ -1,0 +1,41 @@
+---
+
+# Smooth over Provider differences
+- name: Common User Setup Among Providers
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: ./roles/common
+
+# Common to every system
+# Users, packages, swapfile, etc.
+- name: All Systems
+  hosts: all
+  sudo: true
+  roles:
+    - role: ./roles/system
+    - role: kamaln7.swapfile
+      swapfile_size: 1GB
+      swapfile_swappiness: 10
+      swapfile_location: /mnt/swapfile
+
+# Now, we get more specific for what
+# we need to do for our web servers
+- name: Web Servers
+  hosts: web
+  sudo: true
+  gather_facts: true
+  roles:
+
+    # Enable Firewall
+    # Let in HTTP Traffic
+    - role: ./roles/firewall
+      http_in: true
+
+    # Install Nginx
+    - role: ./roles/nginx
+      # Redirect (301 Permanent) if a domain does not match
+      redirect_url: http://www.ansibletutorials.com
+
+    # Install Node.js
+    - nodesource.node

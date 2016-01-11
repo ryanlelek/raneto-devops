@@ -1,0 +1,47 @@
+---
+
+##########################
+### Site Configuration ###
+##########################
+
+- name: Ensure Nginx Site Configuration
+  template: src=site.conf.j2 dest=/etc/nginx/conf.d/{{ nginx_domain }}.conf owner=root group=root mode=0644
+  sudo: true
+  notify: Reload Nginx
+
+#################################
+### HTTP Basic Authentication ###
+#################################
+
+- name: Copy Nginx HTTP Basic Username/Password file
+  copy: src={{ nginx_password_file }} dest=/etc/nginx/htpasswd_{{ nginx_domain }} owner=root group=root mode=0644
+  sudo: true
+  when: nginx_password
+
+###################
+### SSL Support ###
+###################
+
+- name: Ensure Nginx SSL Directory (Nginx)
+  file: path=/etc/nginx/ssl state=directory owner=root group=root mode=0755
+  sudo: true
+  when: nginx_ssl
+  notify: Reload Nginx
+
+- name: Ensure Nginx SSL Directory (Domain)
+  file: path=/etc/nginx/ssl/{{ nginx_domain }} state=directory owner=root group=root mode=0755
+  sudo: true
+  when: nginx_ssl
+  notify: Reload Nginx
+
+- name: Copy SSL Key
+  copy: src={{ nginx_ssl_key }} dest=/etc/nginx/ssl/{{ nginx_domain }}/{{ nginx_domain }}.key owner=root group=root mode=0600
+  sudo: true
+  when: nginx_ssl
+  notify: Reload Nginx
+
+- name: Copy SSL Certificate
+  copy: src={{ nginx_ssl_crt }} dest=/etc/nginx/ssl/{{ nginx_domain }}/{{ nginx_domain }}.crt owner=root group=root mode=0600
+  sudo: true
+  when: nginx_ssl
+  notify: Reload Nginx

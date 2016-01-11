@@ -1,0 +1,43 @@
+---
+
+- name: Raneto
+  hosts: raneto
+  roles:
+
+    # Clone Raneto Application Repository
+    # You'll want to edit this line with your team's documentation repository
+    # The cloned repository lives in the Home Directory
+    #
+    # We use HTTPS because this is a public repository, as an example
+    # You can use SSH-based, including key support, just uncomment the
+    # SSH private and public key files and add the appropriate filepaths
+    # Make sure you also add the *public* key in the pair to your Git host's
+    # Deploy Keys or you will be denied permission to clone.
+    # NEVER SHARE YOUR PRIVATE KEY WITH ANYONE
+    - role: ./roles/git_repo
+      git_repo: https://github.com/gilbitron/Raneto.git
+      project: raneto
+      #ssh_private_key: ./keys/id_rsa
+      #ssh_public_key: ./keys/id_rsa.pub
+
+    # Generate the Nginx site configuration
+    # Proxy any non-static file request to Node.js
+    - role: ./roles/nginx_site
+      sudo: true
+      nginx_root: raneto/public
+      nginx_domain: raneto.ryanlelek.com
+      nginx_www: false
+      nginx_ssl: false
+      nodejs: true # Enables proxy
+
+    # Node Daemon for our Raneto application
+    - role: ./roles/nodejs_daemon
+      daemon: raneto
+      command: npm start
+      sudo: no
+      envvars:
+        # Probably a good idea to leave these as-is
+        # unless you have a good reason to edit them...
+        # You can add new ones though, right below these
+        - { key: NODE_ENV, value: PRODUCTION }
+        - { key: PORT,     value: 3000 }

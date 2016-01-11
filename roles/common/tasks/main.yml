@@ -1,0 +1,22 @@
+---
+
+# The goal of this role is to create
+# the main Ansible, give that user sudo
+# privileges and then exit. This varies
+# from provider to provider, so we handle
+# laying this common ground here and normalize
+
+# Vagrant
+- include: root.yml
+  sudo: true
+  vars:
+    ansible_ssh_user: vagrant
+    username: vagrant
+  when: "'vagrant' in group_names"
+
+# DigitalOcean
+- include: digitalocean.yml
+  vars:
+    # Capture Variable
+    username: "{{ ansible_ssh_user }}"
+  when: "'digitalocean' in group_names"

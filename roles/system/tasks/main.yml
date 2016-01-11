@@ -1,0 +1,96 @@
+---
+
+################
+### PACKAGES ###
+################
+
+- name: Update System Package Cache
+  apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
+
+- name: Install Packages
+  apt: name={{ item }} state=latest
+  sudo: yes
+  with_items:
+     - ntp                        # NTP Time Daemon
+     - language-pack-en           # Locale Packages (Removes Warnings)
+     - fail2ban
+     - curl
+     - git
+     - vim
+     - make
+     - g++                        # Compiler
+     - htop
+     - apt-show-versions
+     - python                     # Ansible
+     - python-software-properties # Ansible
+     - python-pycurl              # Ansible
+     - libkrb5-dev                # Kerberos MongoDB/JS https://github.com/christkv/kerberos/issues/21
+
+################
+### SETTINGS ###
+################
+
+# Set Time Zone
+# - Etc/UTC
+# - America/New_York
+# - America/Los_Angeles
+# echo 'Etc/UTC' | sudo tee /etc/timezone > /dev/null
+- name: Update Timezone to Etc/UTC
+  copy: content="Etc/UTC\n" dest=/etc/timezone owner=root group=root mode=0644
+  sudo: true
+  register: timezone
+
+- name: Reconfigure Timezone Data
+  shell: dpkg-reconfigure -f noninteractive tzdata
+  sudo: true
+  when: timezone.changed
+
+##################
+### SSH CONFIG ###
+##################
+
+- name: SSHD Configuration
+  sudo: yes
+  copy: src=ssh/sshd_config.secured dest=/etc/ssh/sshd_config owner=root group=root mode=0644
+
+- name: Remove Root SSH Configuration
+  sudo: yes
+  file: path=/root/.ssh state=absent
+
+- name: Regenerate Missing SSH Keys as Root
+  shell: ssh-keygen -A
+  sudo: yes
+  register: keygen_result
+  # Output: ssh-keygen: generating new host keys: RSA1 ED25519
+  changed_when: keygen_result.stdout != ""
+
+# TODO: Disabled handler due to disconnect bug
+# https://github.com/ansible/ansible-modules-core/issues/1298
+#- name: SSHD Restart
+#  sudo: yes
+#  service: name=sshd state=restarted enabled=yes
+
+###################
+### USER CONFIG ###
+###################
+
+- name: Bash Logout
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  remote_user: "{{ ansible_ssh_user }}"
+  copy: src=bash/bash_logout dest=/home/{{ ansible_ssh_user }}/.bash_logout owner={{ ansible_ssh_user }} mode=0644
+
+########################
+### UPGRADE PACKAGES ###
+########################
+
+# This will have a conditional shortly to
+# ensure it only runs on initial provision
+- include: upgrade.yml
+
+########################
+### REBOOT IF NEEDED ###
+########################
+
+- include: reboot.yml

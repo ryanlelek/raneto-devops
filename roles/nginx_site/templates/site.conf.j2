@@ -1,0 +1,172 @@
+{% if nodejs %}
+
+upstream {{ proxy_name }} {
+  server 127.0.0.1:3000 max_fails=0 fail_timeout=5s;
+  keepalive 256;
+}
+{% endif %}
+
+{% if nginx_ssl %}
+# HTTP -> HTTPS
+server {
+
+  listen       80;
+  server_name  {{ nginx_domain }} www.{{ nginx_domain }};
+{% if nginx_www %}
+  return       301 https://www.{{ nginx_domain }}$request_uri;
+{% else %}
+  return       301 https://{{ nginx_domain }}$request_uri;
+{% endif %}
+  # Option: $server_name
+
+}
+{% endif %}
+
+server {
+
+{% if nginx_ssl %}
+  listen               443 ssl;
+  ssl                  on;
+  ssl_protocols        TLSv1.2 TLSv1.1 TLSv1;
+  ssl_certificate      /etc/nginx/ssl/{{ nginx_domain }}/{{ nginx_domain }}.crt;
+  ssl_certificate_key  /etc/nginx/ssl/{{ nginx_domain }}/{{ nginx_domain }}.key;
+{% else %}
+  listen  80;
+{% endif %}
+
+{% if nginx_www %}
+  server_name  {{ nginx_domain }};
+{% if nginx_ssl %}
+  return       301 https://www.{{ nginx_domain }}$request_uri;
+{% else %}
+  return       301 http://www.{{ nginx_domain }}$request_uri;
+{% endif %}
+{% else %}
+  server_name  www.{{ nginx_domain }};
+{% if nginx_ssl %}
+  return       301 https://{{ nginx_domain }}$request_uri;
+{% else %}
+  return       301 http://{{ nginx_domain }}$request_uri;
+{% endif %}
+{% endif %}
+
+}
+
+server {
+
+{% if nginx_ssl %}
+  listen               443 ssl;
+  ssl                  on;
+  ssl_protocols        TLSv1.2 TLSv1.1 TLSv1;
+  ssl_certificate      /etc/nginx/ssl/{{ nginx_domain }}/{{ nginx_domain }}.crt;
+  ssl_certificate_key  /etc/nginx/ssl/{{ nginx_domain }}/{{ nginx_domain }}.key;
+{% else %}
+  listen  80;
+{% endif %}
+
+{% if nginx_www %}
+  server_name  www.{{ nginx_domain }};
+{% else %}
+  server_name  {{ nginx_domain }};
+{% endif %}
+
+  #root    /var/www/public;
+  root     /home/{{ ansible_ssh_user }}/{{ nginx_root }};
+{% if php %}
+  index    index.php index.html index.htm;
+{% else %}
+  index    index.html index.htm;
+{% endif %}
+
+  # Errors
+  error_page  404              /404.html;
+  error_page  500 502 503 504  /50x.html;
+  #location = /50x.html {
+  #  root /usr/share/nginx/html;
+  #}
+
+  # Patch for Underscores in Headers
+  #underscores_in_headers on;
+
+  # Static Files
+  location ~* \.(css|js|jpeg|jpg|gif|png|ico|txt|woff|ttf|svg|eot|otf)$ {
+    expires     -1;
+    access_log  off;
+    add_header  Cache-Control "public";
+    # (woff|ttf|svg|eot|otf)
+    # add_header  "Access-Control-Allow-Origin" "*";
+  }
+
+  # location = / { REDIRECT }
+  # location = /dash.html { PASSWORD }
+
+  # Remove Trailing Slash
+  # Remove .html
+  location / {
+{% if nginx_password %}
+    auth_basic  "Restricted";
+    auth_basic_user_file /etc/nginx/htpasswd_{{ nginx_domain }};
+{% endif %}
+    expires     -1;
+    access_log  off;
+    rewrite     ^/index.html?$ / permanent;
+    # Affects WordPress
+    #rewrite     ^/(.*)/$ /$1 permanent;
+    rewrite     ^/(.*)/index\.html$ /$1 permanent;
+    rewrite     ^/(.*)\.html?$ /$1 permanent;
+    rewrite     ^/(.+)\.$ /$1 permanent;
+
+# TODO: Remove index.html
+{% if nodejs %}
+    try_files   $uri $uri.html $uri/index.html @proxy;
+{% elif php %}
+    # $uri.php?q=$uri&$args&$query_string
+    try_files   $uri $uri/ /index.php?$args;
+{% else %}
+    try_files   $uri $uri.html $uri/index.html =404;
+{% endif %}
+  }
+
+  # Redirects
+{% for redirect in site_redirects %}
+  location = {{ redirect.from }} { return 301 {{ redirect.to }}; }
+{% endfor %}
+{% if php %}
+
+  location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+  }
+{% endif %}
+{% if nodejs %}
+
+  # Pass to Node.js
+  location @proxy {
+    proxy_pass        http://nodejs;
+    proxy_redirect    off;
+    proxy_set_header  Host $host;
+    proxy_set_header  X-Real-IP $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+{% endif %}
+{% if websockets %}
+
+  # WebSockets
+  location /socket.io/ {
+    proxy_pass         http://nodejs;
+    proxy_redirect     off;
+    proxy_set_header   Host $host;
+    proxy_set_header   X-Real-IP $remote_addr;
+    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+    # WebSocket Part
+    proxy_http_version 1.1;
+    proxy_set_header   Upgrade $http_upgrade;
+    proxy_set_header   Connection "upgrade";
+  }
+{% endif %}
+
+}

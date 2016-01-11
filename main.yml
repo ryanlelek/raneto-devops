@@ -1,0 +1,7 @@
+---
+
+# Does Everything
+# You can run "provision" or "deploy" individually
+# in any command where you use "main"
+- include: provision.yml
+- include: deploy.yml

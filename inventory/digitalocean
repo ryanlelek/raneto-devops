@@ -1,0 +1,38 @@
+
+# Here we have our provider, DigitalOcean
+# The important thing is to name your provider
+# and put all of your machines in that category
+# to help smooth over differences from cloud to cloud
+#
+# It is strongly suggested to use a FQDN as a hostname
+# FQDN = Fully Qualified Domain Name
+# https://en.wikipedia.org/wiki/Fully_qualified_domain_name
+
+
+[digitalocean]
+raneto.ryanlelek.com  ansible_ssh_user=ansible
+
+
+# Now we specify another group called "web"
+# We could have picked "www" or something else
+# Group names are arbitrary, but you must be consistent
+#
+# We use "web" to identify all of our web servers
+# This way, we'll know where to install Nginx, Apache, etc.
+#
+# Notice how we're reusing the above information
+# simply by referencing the hostname only
+
+
+[web]
+raneto.ryanlelek.com
+
+
+# This is another group named "raneto"
+# We use this group machines for our project together
+# We'll utilize this group when looking to put
+# project-specific files on the machines
+
+
+[raneto]
+raneto.ryanlelek.com

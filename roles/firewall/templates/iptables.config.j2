@@ -1,0 +1,147 @@
+
+*filter
+
+##############
+### COMMON ###
+##############
+
+# Allow Loopback
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+
+# Allow Ping
+-A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+-A OUTPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+
+# DNS - Outbound
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+-A INPUT -p udp -m udp --sport 53 -j ACCEPT
+# Have to add this too
+-A OUTPUT -p udp -m udp --sport 53 -j ACCEPT
+-A INPUT -p udp -m udp --dport 53 -j ACCEPT
+
+# NTP - Outbound
+-A OUTPUT -p udp -m udp --dport 123 -j ACCEPT
+-A INPUT -p udp -m udp --sport 123 -j ACCEPT
+
+###############
+### DYNAMIC ###
+###############
+{% if ssh_in != false %}
+
+# SSH - Inbound
+-A INPUT -p tcp -m tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+{% endif %}
+{% if ssh_out != false %}
+
+# SSH - Outbound (for Git)
+-A OUTPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if http_in != false %}
+
+# HTTP - Inbound
+-A INPUT -p tcp -m tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if http_out != false %}
+
+# HTTP - Outbound
+-A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if https_in != false %}
+
+# HTTPS - Inbound
+-A INPUT -p tcp -m tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if https_out != false %}
+
+# HTTPS - Outbound
+-A OUTPUT -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if git_out != false %}
+
+# Git - Outbound
+-A OUTPUT -p tcp --dport {{ git_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp --sport {{ git_port }} -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if papertrail_out != false %}
+
+# PaperTrail - Outbound
+-A OUTPUT -p tcp --dport 32507 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp --sport 32507 -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if mongodb_in != false %}
+
+# MongoDB - Inbound
+-A INPUT -p tcp -m tcp --dport {{ mongodb_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport {{ mongodb_port }} -m state --state ESTABLISHED -j ACCEPT
+{% endif %}
+{% if mongodb_out != false %}
+
+# MongoDB - Outbound
+-A INPUT -p tcp -m tcp --sport {{ mongodb_port }} -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport {{ mongodb_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+{% endif %}
+{% if redis_in != false %}
+
+# Redis - Inbound
+{% for host in redis_in %}
+-A INPUT -p tcp -m tcp -s {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --dport {{ redis_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp -d {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --sport {{ redis_port }} -m state --state ESTABLISHED -j ACCEPT
+{% endfor %}
+{% endif %}
+{% if redis_out != false %}
+
+# Redis - Outbound
+{% for host in redis_in %}
+-A INPUT -p tcp -m tcp -s {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --sport {{ redis_port }} -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp -d {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --dport {{ redis_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+{% endfor %}
+{% endif %}
+{% if rabbitmq_in != false %}
+
+# RabbitMQ/AMQP - Inbound
+{% for host in groups['rabbitmq_access'] %}
+-A INPUT -p tcp -m tcp -s {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --dport {{ rabbitmq_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp -d {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --sport {{ rabbitmq_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+{% endfor %}
+{% endif %}
+{% if rabbitmq_out != false %}
+
+# RabbitMQ/AMQP - Outbound
+{% for host in groups['rabbitmq_access'] %}
+-A INPUT -p tcp -m tcp -s {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --sport {{ rabbitmq_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp -d {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} --dport {{ rabbitmq_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+{% endfor %}
+{% endif %}
+{% if rabbitmq_management != false %}
+
+# RabbitMQ/AMQP - Management Page
+-A INPUT -p tcp -m tcp -s {{ rabbitmq_management_ip }} --dport {{ rabbitmq_management_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp -d {{ rabbitmq_management_ip }} --sport {{ rabbitmq_management_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
+{% endif %}
+
+###############
+### DROPPED ###
+###############
+
+# Log It
+-N LOGGING
+-A INPUT -j LOGGING
+-A FORWARD -j LOGGING
+-A OUTPUT -j LOGGING
+-A LOGGING -m limit --limit 2/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+-A LOGGING -j DROP
+
+# Drop everything else
+#-A INPUT -j DROP
+#-A FORWARD -j DROP
+#-A OUTPUT -j DROP
+
+COMMIT
+

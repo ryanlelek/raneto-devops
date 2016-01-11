@@ -1,0 +1,11 @@
+---
+
+- name: Verify Nginx
+  command: nginx -t
+  sudo: yes
+  changed_when: false
+  notify: Reload Nginx
+
+- name: Reload Nginx
+  command: nginx -s reload
+  sudo: yes

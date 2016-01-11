@@ -1,0 +1,5 @@
+---
+
+- name: Firewall Reload
+  shell: /etc/network/if-pre-up.d/firewall.reload.sh
+  sudo: true

@@ -1,0 +1,14 @@
+---
+nginx_domain: example.com
+nginx_www: false
+nginx_root: public
+nginx_password: false
+nginx_password_file: false
+nginx_ssl: false
+nginx_ssl_key: false
+nginx_ssl_crt: false
+websockets: false
+site_redirects: []
+php: false
+nodejs: false
+proxy_name: nodejs

@@ -1,0 +1,9 @@
+
+server {
+
+  listen       80 default;
+  server_name  localhost;
+  rewrite      ^ {{ redirect_url }} permanent;
+  # or use "redirect"
+
+}

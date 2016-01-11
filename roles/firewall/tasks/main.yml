@@ -1,0 +1,18 @@
+---
+
+- name: Directory /etc/network/firewall
+  file: path=/etc/network/firewall state=directory owner=root group=root mode=0755
+  sudo: true
+
+- name: Load Firewall before Network Up
+  copy: src=firewall.reload.sh dest=/etc/network/if-pre-up.d/firewall.reload.sh owner=root group=root mode=0755
+  sudo: true
+
+- name: Firewall IPTables Rules
+  template: src=iptables.config.j2 dest=/etc/network/firewall/iptables.config owner=root group=root mode=0644
+  sudo: true
+  notify: Firewall Reload
+
+# Reload Firewall
+# Changes may not be able to wait
+- meta: flush_handlers

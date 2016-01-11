@@ -1,0 +1,13 @@
+
+*filter
+
+#####################
+### Anything Goes ###
+#####################
+
+# -P and -A also an option
+-I INPUT -j ACCEPT
+-I FORWARD -j ACCEPT
+-I OUTPUT -j ACCEPT
+
+COMMIT
