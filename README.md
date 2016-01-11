@@ -29,7 +29,7 @@ From the project directory run:
 
 This will create a new VM on your location machine and configure it to run Raneto.  
 That's all you need to do to deploy locally.  
-**Check access with `$ curl -v -H "Host: devops.raneto.com" http://localhost:8888`**
+**Check access with `$ curl -v -H "Host: devops.raneto.com" http://localhost:8888`**  
 If you want to, [set the domain in /etc/hosts](http://ubuntuforums.org/showthread.php?t=3407) to point to 127.0.0.1 to access in a browser
 
 ## 2) Inventory Your Remote Machines
@@ -37,7 +37,8 @@ I'm using DigitalOcean as my provider, and suggest using them for the easiest co
 
 You can use other providers or machines of your own with little to no modifications.
 
-DigitalOcean provides VPS machines for $5/month (1 CPU, 512MB). **Use coupon code `LINUX13` to get $10 Free** (I'm not affiliated with that code). 
+DigitalOcean provides VPS machines for $5/month (1 CPU, 512MB).  
+**Use coupon code `LINUX13` to get $10 Free** (I'm not affiliated with that code). 
 
 No matter what provider you choose, set a DNS record for the hostname (myhost.mydomain.com) and replace the existing hostname in the `inventory/digitalocean` file.
 
@@ -48,13 +49,14 @@ If you have any problems or questions, open an issue and I'll help you.
 
 `$ ansible-playbook --inventory-file=inventory/ --ask-sudo-pass main.yml`
 
-Here's a shorter version that does the same thing:
+Here's a shorter version that does the same thing:  
 `$ ansible-playbook -i inventory/ -K main.yml`
 
 ## 4) Adding your Raneto repository
 See the new [Raneto example](https://github.com/gilbitron/Raneto/tree/master/example) for how to structure your project.  
 It's a good idea to start a new Git repository (public or private) and commit your documentation files to that repository instead of directly to a cloned copy of Raneto.  
-To use your Raneto project's Git repository in this deplkoyment process:  
+
+To use your Raneto project's Git repository in this deployment process:  
 
 1. edit `deploy.yml` and add your Git repo address  
 2. edit `deploy.yml` and change the domain `devops.raneto.com` to your (sub)domain  
