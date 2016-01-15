@@ -18,7 +18,7 @@ If you like what you see, I'd suggest following me on my profile and/or sending 
 1. [VirtualBox v5.0.10](https://www.virtualbox.org/wiki/Downloads)
 2. [Vagrant v1.8.1](https://www.vagrantup.com/downloads.html)
 3. [Homebrew](http://brew.sh/)
-4. Ansible v1.9.4 installed with Homebrew:  
+4. Ansible v2.0.0.1 installed with Homebrew:  
 `$ brew install ansible`
 
 ## Ansible Dependencies

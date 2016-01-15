@@ -23,7 +23,7 @@
     # Generate the Nginx site configuration
     # Proxy any non-static file request to Node.js
     - role: ./roles/nginx_site
-      sudo: true
+      become: yes
       nginx_root: raneto/public
       nginx_domain: devops.raneto.com
       nginx_www: false
@@ -34,7 +34,7 @@
     - role: ./roles/nodejs_daemon
       daemon: raneto
       command: npm start
-      sudo: no
+      become: no
       envvars:
         # Probably a good idea to leave these as-is
         # unless you have a good reason to edit them...

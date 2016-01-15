@@ -1,16 +1,16 @@
 ---
 
 - name: Directory /etc/network/firewall
+  become: yes
   file: path=/etc/network/firewall state=directory owner=root group=root mode=0755
-  sudo: true
 
 - name: Load Firewall before Network Up
+  become: yes
   copy: src=firewall.reload.sh dest=/etc/network/if-pre-up.d/firewall.reload.sh owner=root group=root mode=0755
-  sudo: true
 
 - name: Firewall IPTables Rules
   template: src=iptables.config.j2 dest=/etc/network/firewall/iptables.config owner=root group=root mode=0644
-  sudo: true
+  become: yes
   notify: Firewall Reload
 
 # Reload Firewall

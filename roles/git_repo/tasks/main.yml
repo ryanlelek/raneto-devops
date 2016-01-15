@@ -6,31 +6,31 @@
 
 - name: Copy SSH Key - Private
   copy: src={{ ssh_private_key }} dest=/home/{{ ansible_ssh_user }}/.ssh/{{ project }}_rsa owner={{ ansible_ssh_user }} group=sudo mode=0600
-  sudo: no
+  become: no
   when: ssh_private_key != false
 
 - name: Copy SSH Key - Public
   copy: src={{ ssh_public_key }} dest=/home/{{ ansible_ssh_user }}/.ssh/{{ project }}_rsa.pub owner={{ ansible_ssh_user }} group=sudo mode=0644
-  sudo: no
+  become: no
   when: ssh_public_key != false
 
 - name: Clone Git Repository (Private)
   git: repo={{ git_repo }} dest=/home/{{ ansible_ssh_user }}/{{ project }} force=yes accept_hostkey=yes key_file=/home/{{ ansible_ssh_user }}/.ssh/{{ project }}_rsa
-  sudo: no
+  become: no
   register: gitcode
   when: ssh_private_key != false
 
 - name: Clone Git Repository (Public)
   git: repo={{ git_repo }} dest=/home/{{ ansible_ssh_user }}/{{ project }} force=yes accept_hostkey=yes
-  sudo: no
+  become: no
   register: gitcode
   when: ssh_private_key == false
 
 - name: Correct Permissions for Directory
-  sudo: true
+  become: yes
   file: path=/home/{{ ansible_ssh_user }}/{{ project }} state=directory owner={{ ansible_ssh_user }} group=sudo mode=0755
 
 - name: Configure Git
   shell: chdir="/home/{{ ansible_ssh_user }}/{{ project }}" git config url."https://".insteadOf git://;
-  sudo: no
+  become: no
   when: gitcode.changed

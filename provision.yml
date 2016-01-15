@@ -11,7 +11,7 @@
 # Users, packages, swapfile, etc.
 - name: All Systems
   hosts: all
-  sudo: true
+  become: yes
   roles:
     - role: ./roles/system
     - role: kamaln7.swapfile
@@ -23,7 +23,7 @@
 # we need to do for our web servers
 - name: Web Servers
   hosts: web
-  sudo: true
+  become: yes
   gather_facts: true
   roles:
 

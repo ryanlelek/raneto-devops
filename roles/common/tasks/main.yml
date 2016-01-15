@@ -8,7 +8,7 @@
 
 # Vagrant
 - include: root.yml
-  sudo: true
+  become: yes
   vars:
     ansible_ssh_user: vagrant
     username: vagrant

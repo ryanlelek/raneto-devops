@@ -1,5 +1,5 @@
 ---
 
 - name: Restart Daemon
-  sudo: yes
+  become: yes
   service: name={{ daemon }} state=restarted enabled=yes

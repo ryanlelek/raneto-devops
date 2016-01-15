@@ -21,7 +21,7 @@
 
 # Run Root Tasks (if needed)
 - include: root.yml
-  sudo: true
+  become: yes
   vars:
     ansible_ssh_user: root
   when: host_provisioned.stdout == "NEW"

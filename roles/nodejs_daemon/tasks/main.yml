@@ -5,24 +5,24 @@
 ##########################
 
 - name: Copy .npmrc to project
-  sudo: yes
+  become: yes
   template: src=npmrc.j2 dest=/home/{{ ansible_ssh_user }}/{{ daemon }}/.npmrc owner={{ ansible_ssh_user }} group=sudo mode=0644
 
 - name: Make Deploy
   command: make deploy chdir=/home/{{ ansible_ssh_user }}/{{ daemon }} removes=Makefile
-  sudo: no
+  become: no
   changed_when: false
   when: gitcode.changed
 
 - name: Ensure Log Directory
   file: path=/home/{{ ansible_ssh_user }}/logs state=directory owner={{ ansible_ssh_user }} group=sudo mode=0755
-  sudo: yes
+  become: yes
 
 - name: Copy Node Upstart Daemon Service
   template: src=node.daemon.conf.j2 dest=/etc/init/{{ daemon }}.conf mode=0644
-  sudo: yes
+  become: yes
   notify: Restart Daemon
 
 - name: Ensure Node Daemon is started
-  sudo: yes
+  become: yes
   service: name={{ daemon }} state=started enabled=yes
