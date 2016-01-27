@@ -11,12 +11,9 @@
   become: yes
   vars:
     ansible_ssh_user: vagrant
-    username: vagrant
+    user_username: vagrant
   when: "'vagrant' in group_names"
 
 # DigitalOcean
 - include: digitalocean.yml
-  vars:
-    # Capture Variable
-    username: "{{ ansible_ssh_user }}"
   when: "'digitalocean' in group_names"

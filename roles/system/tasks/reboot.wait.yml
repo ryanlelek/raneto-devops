@@ -5,5 +5,6 @@
   when: "'vagrant' in group_names"
 
 - name: Wait for Reboot (Remote Host - Generic)
-  local_action: wait_for host={{ inventory_hostname }} port=22 delay=15 state=started
+  become: no
+  local_action: wait_for host={{ inventory_hostname }} port=22 delay=30 state=started
   when: "'vagrant' not in group_names"
