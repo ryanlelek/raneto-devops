@@ -38,7 +38,7 @@
       http_in: true
 
     # Install Nginx
-    - role: ./roles/nginx
+    - role: ryanlelek.nginx
       # Redirect (301 Permanent) if a domain does not match
       redirect_url: http://www.ansibletutorials.com
 
