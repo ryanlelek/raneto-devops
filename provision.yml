@@ -5,7 +5,7 @@
   hosts: all
   gather_facts: false
   roles:
-    - role: ./roles/providers
+    - ryanlelek.providers
 
 # Common to every system
 # Users, packages, swapfile, etc.
