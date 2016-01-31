@@ -15,7 +15,7 @@ If you like what you see, I'd suggest following me on my profile and/or sending 
 # Installation
 
 ## Local Applications
-1. [VirtualBox v5.0.10](https://www.virtualbox.org/wiki/Downloads)
+1. [VirtualBox v5.0.14](https://www.virtualbox.org/wiki/Downloads)
 2. [Vagrant v1.8.1](https://www.vagrantup.com/downloads.html)
 3. Vagrant Image: ubuntu/trusty64 (virtualbox, 20160122.0.0)
 4. [Homebrew](http://brew.sh/)
