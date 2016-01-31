@@ -1,9 +1,0 @@
----
-
-########################
-### UPGRADE PACKAGES ###
-########################
-
-# This will have a conditional shortly to
-# ensure it only runs on initial provision
-- include: upgrade.yml
