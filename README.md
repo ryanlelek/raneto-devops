@@ -89,7 +89,7 @@ You might be accessing the machine via IP or a site domain that has not been con
 `$ curl -v -H "Host: devops.raneto.com" http://127.0.0.1:8888`
 
 ## Sudo Password
-The default sudo password is **`raneto`**
+The default sudo password is **`ansible`**
 
 ## SSH Key Mismatch
 You may need to remove the server's record in ~/.ssh/known_hosts if the server's ip/keys change (e.g. after rebuilding the server)
