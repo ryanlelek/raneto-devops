@@ -6,6 +6,7 @@
 - ryanlelek.timezone
 - ryanlelek.logout
 - ryanlelek.reboot
+- ryanlelek.firewall
 
 # 3rd Party
 - kamaln7.swapfile

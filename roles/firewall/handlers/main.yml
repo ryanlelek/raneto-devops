@@ -1,5 +1,0 @@
----
-
-- name: Firewall Reload
-  become: yes
-  shell: /etc/network/if-pre-up.d/firewall.reload.sh

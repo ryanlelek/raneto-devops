@@ -34,7 +34,7 @@
 
     # Enable Firewall
     # Let in HTTP Traffic
-    - role: ./roles/firewall
+    - role: ryanlelek.firewall
       http_in: true
 
     # Install Nginx
