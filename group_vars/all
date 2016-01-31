@@ -1,5 +1,0 @@
----
-
-# Default Password: "raneto"
-user_username: ansible
-user_password: $5$rounds=110000$Z9.XEvmM6x677N.k$zqQQEjcriumIPygUgXPzwIjOaQkYwW1EdbXsY7YQ.a2
