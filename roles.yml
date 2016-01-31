@@ -8,6 +8,7 @@
 - ryanlelek.reboot
 - ryanlelek.firewall
 - ryanlelek.nginx
+- ryanlelek.site
 
 # 3rd Party
 - kamaln7.swapfile

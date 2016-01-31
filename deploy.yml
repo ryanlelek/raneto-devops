@@ -22,13 +22,13 @@
 
     # Generate the Nginx site configuration
     # Proxy any non-static file request to Node.js
-    - role: ./roles/nginx_site
+    - role: ryanlelek.site
       become: yes
-      nginx_root: raneto/public
-      nginx_domain: devops.raneto.com
-      nginx_www: false
-      nginx_ssl: false
-      nodejs: true # Enables proxy
+      site_root: raneto/public
+      site_domain: devops.raneto.com
+      site_www: false
+      site_ssl: false
+      site_nodejs: true # Enables proxy
 
     # Node Daemon for our Raneto application
     - role: ./roles/nodejs_daemon
