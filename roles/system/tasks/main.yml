@@ -1,33 +1,6 @@
 ---
 
 ################
-### PACKAGES ###
-################
-
-- name: Update System Package Cache
-  apt: update_cache=yes cache_valid_time=3600
-  become: yes
-
-- name: Install Packages
-  apt: name={{ item }} state=latest
-  become: yes
-  with_items:
-     - ntp                        # NTP Time Daemon
-     - language-pack-en           # Locale Packages (Removes Warnings)
-     - fail2ban
-     - curl
-     - git
-     - vim
-     - make
-     - g++                        # Compiler
-     - htop
-     - apt-show-versions
-     - python                     # Ansible
-     - python-software-properties # Ansible
-     - python-pycurl              # Ansible
-     - libkrb5-dev                # Kerberos MongoDB/JS https://github.com/christkv/kerberos/issues/21
-
-################
 ### SETTINGS ###
 ################
 
