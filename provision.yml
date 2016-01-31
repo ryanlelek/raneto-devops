@@ -22,6 +22,7 @@
       swapfile_size: 1GB
       swapfile_swappiness: 10
       swapfile_location: /mnt/swapfile
+    - ryanlelek.reboot
 
 # Now, we get more specific for what
 # we need to do for our web servers
