@@ -23,8 +23,7 @@ If you like what you see, I'd suggest following me on my profile and/or sending 
 `$ brew install ansible`
 
 ## Ansible Dependencies
-`$ ansible-galaxy install nodesource.node`  
-`$ ansible-galaxy install kamaln7.swapfile`  
+`$ ansible-galaxy install -r roles.yml`  
 
 # Usage
 
