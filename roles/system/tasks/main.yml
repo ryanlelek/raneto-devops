@@ -1,24 +1,5 @@
 ---
 
-################
-### SETTINGS ###
-################
-
-# Set Time Zone
-# - Etc/UTC
-# - America/New_York
-# - America/Los_Angeles
-# echo 'Etc/UTC' | sudo tee /etc/timezone > /dev/null
-- name: Update Timezone to Etc/UTC
-  copy: content="Etc/UTC\n" dest=/etc/timezone owner=root group=root mode=0644
-  become: yes
-  register: timezone
-
-- name: Reconfigure Timezone Data
-  shell: dpkg-reconfigure -f noninteractive tzdata
-  become: yes
-  when: timezone.changed
-
 ###################
 ### USER CONFIG ###
 ###################
