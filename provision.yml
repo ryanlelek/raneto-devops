@@ -1,11 +1,11 @@
 ---
 
 # Smooth over Provider differences
-- name: Common User Setup Among Providers
+- name: Base Setup Among Providers
   hosts: all
   gather_facts: false
   roles:
-    - role: ./roles/common
+    - role: ./roles/providers
 
 # Common to every system
 # Users, packages, swapfile, etc.
