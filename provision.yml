@@ -13,6 +13,7 @@
   hosts: all
   become: yes
   roles:
+    - role: ./roles/sshd
     - role: ./roles/system
     - role: kamaln7.swapfile
       swapfile_size: 1GB

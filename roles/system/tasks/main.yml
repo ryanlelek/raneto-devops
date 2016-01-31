@@ -46,40 +46,15 @@
   become: yes
   when: timezone.changed
 
-##################
-### SSH CONFIG ###
-##################
-
-- name: SSHD Configuration
-  become: yes
-  copy: src=ssh/sshd_config.secured dest=/etc/ssh/sshd_config owner=root group=root mode=0644
-
-- name: Remove Root SSH Configuration
-  become: yes
-  file: path=/root/.ssh state=absent
-
-- name: Regenerate Missing SSH Keys as Root
-  shell: ssh-keygen -A
-  become: yes
-  register: keygen_result
-  # Output: ssh-keygen: generating new host keys: RSA1 ED25519
-  changed_when: keygen_result.stdout != ""
-
-# TODO: Disabled handler due to disconnect bug
-# https://github.com/ansible/ansible-modules-core/issues/1298
-#- name: SSHD Restart
-#  become: yes
-#  service: name=sshd state=restarted enabled=yes
-
 ###################
 ### USER CONFIG ###
 ###################
 
-- name: Bash Logout
+- name: Bash Logout Script (Clear History)
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   remote_user: "{{ ansible_ssh_user }}"
-  copy: src=bash/bash_logout dest=/home/{{ ansible_ssh_user }}/.bash_logout owner={{ ansible_ssh_user }} mode=0644
+  copy: src=bash_logout.secured dest=/home/{{ ansible_ssh_user }}/.bash_logout owner={{ ansible_ssh_user }} mode=0644
 
 ########################
 ### UPGRADE PACKAGES ###
