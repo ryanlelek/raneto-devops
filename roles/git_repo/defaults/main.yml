@@ -1,5 +1,0 @@
----
-git_repo: false
-ssh_private_key: false
-ssh_public_key: false
-project: gitrepo

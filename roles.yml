@@ -9,6 +9,7 @@
 - ryanlelek.firewall
 - ryanlelek.nginx
 - ryanlelek.site
+- ryanlelek.git-repo
 
 # 3rd Party
 - kamaln7.swapfile

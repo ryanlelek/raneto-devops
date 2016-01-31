@@ -14,11 +14,11 @@
     # Make sure you also add the *public* key in the pair to your Git host's
     # Deploy Keys or you will be denied permission to clone.
     # NEVER SHARE YOUR PRIVATE KEY WITH ANYONE
-    - role: ./roles/git_repo
-      git_repo: https://github.com/gilbitron/Raneto.git
-      project: raneto
-      #ssh_private_key: ./keys/id_rsa
-      #ssh_public_key: ./keys/id_rsa.pub
+    - role: ryanlelek.git-repo
+      git_repo_url:              https://github.com/gilbitron/Raneto.git
+      git_repo_name:             raneto
+      #git_repo_ssh_private_key: ./keys/id_rsa
+      #git_repo_ssh_public_key:  ./keys/id_rsa.pub
 
     # Generate the Nginx site configuration
     # Proxy any non-static file request to Node.js
