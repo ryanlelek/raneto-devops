@@ -1,7 +1,0 @@
----
-daemon: nodejs
-file: index.js
-npm_token: false
-gemfury: false
-gemfury_user: false
-gemfury_key: false

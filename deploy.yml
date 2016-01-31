@@ -31,11 +31,10 @@
       site_nodejs: true # Enables proxy
 
     # Node Daemon for our Raneto application
-    - role: ./roles/nodejs_daemon
-      daemon: raneto
-      command: npm start
+    - role: ryanlelek.daemon-nodejs
       become: no
-      envvars:
+      daemon_name: raneto
+      daemon_envvars:
         # Probably a good idea to leave these as-is
         # unless you have a good reason to edit them...
         # You can add new ones though, right below these
