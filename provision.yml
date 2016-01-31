@@ -14,7 +14,7 @@
   become: yes
   roles:
     - ryanlelek.packages
-    - role: ./roles/sshd
+    - ryanlelek.sshd
     - role: ./roles/system
     - role: kamaln7.swapfile
       swapfile_size: 1GB
