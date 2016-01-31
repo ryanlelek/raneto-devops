@@ -1,15 +1,5 @@
 ---
 
-###################
-### USER CONFIG ###
-###################
-
-- name: Bash Logout Script (Clear History)
-  become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  remote_user: "{{ ansible_ssh_user }}"
-  copy: src=bash_logout.secured dest=/home/{{ ansible_ssh_user }}/.bash_logout owner={{ ansible_ssh_user }} mode=0644
-
 ########################
 ### UPGRADE PACKAGES ###
 ########################

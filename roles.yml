@@ -4,6 +4,7 @@
 - ryanlelek.packages
 - ryanlelek.sshd
 - ryanlelek.timezone
+- ryanlelek.logout
 
 # 3rd Party
 - kamaln7.swapfile

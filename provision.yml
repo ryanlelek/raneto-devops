@@ -16,6 +16,7 @@
     - ryanlelek.packages
     - ryanlelek.sshd
     - ryanlelek.timezone
+    - ryanlelek.logout
     - role: ./roles/system
     - role: kamaln7.swapfile
       swapfile_size: 1GB
