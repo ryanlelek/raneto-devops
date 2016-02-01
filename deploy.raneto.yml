@@ -29,7 +29,9 @@
       site_domain: devops.raneto.com
       site_www: false
       site_ssl: false
-      site_nodejs: true # Enables proxy
+      site_proxy: nodejs # Enables proxy
+      site_proxy_name: raneto
+      site_proxy_port: 3000
 
     # Node Daemon for our Raneto application
     - role: ryanlelek.daemon-nodejs

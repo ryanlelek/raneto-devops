@@ -22,7 +22,8 @@ Vagrant.configure(2) do |config|
     ansible.groups   = {
       "vagrant" => ["web.local"], # Provider
       "web"     => ["web.local"], # Type
-      "raneto"  => ["web.local"]  # Project
+      "raneto"  => ["web.local"], # Project
+      "parse"   => ["web.local"]  # Project
     }
   end
 

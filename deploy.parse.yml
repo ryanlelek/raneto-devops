@@ -1,0 +1,27 @@
+---
+
+- name: Parse
+  hosts: parse:&web
+  roles:
+
+    - role: ryanlelek.git-repo
+      git_repo_name:    parse
+      git_repo_url:     https://github.com/ParsePlatform/parse-server-example.git
+      git_repo_command: npm install
+
+    - role: ryanlelek.site
+      become: yes
+      site_root:       parse/public
+      site_domain:     parse.ryanlelek.com
+      site_www:        false
+      site_ssl:        false
+      site_proxy:      nodejs # Enables proxy
+      site_proxy_name: parse
+      site_proxy_port: 4000
+
+    - role: ryanlelek.daemon-nodejs
+      become: yes
+      daemon_name: parse
+      daemon_envvars:
+        - { key: NODE_ENV, value: PRODUCTION }
+        - { key: PORT,     value: 4000 }

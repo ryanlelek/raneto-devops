@@ -6,3 +6,4 @@
 - include: provision.all.yml
 - include: provision.web.yml
 - include: deploy.raneto.yml
+- include: deploy.parse.yml
