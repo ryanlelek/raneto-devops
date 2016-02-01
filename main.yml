@@ -1,7 +1,8 @@
 ---
 
 # Does Everything
-# You can run "provision" or "deploy" individually
-# in any command where you use "main"
-- include: provision.yml
+# You can run any file individually
+# in any command where you would use "main.yml"
+- include: provision.all.yml
+- include: provision.web.yml
 - include: deploy.yml

@@ -1,0 +1,22 @@
+---
+
+# Now, we get more specific for what
+# we need to do for our web servers
+- name: Web Servers
+  hosts: web
+  become: yes
+  gather_facts: true
+  roles:
+
+    # Enable Firewall
+    # Let in HTTP Traffic
+    - role: ryanlelek.firewall
+      http_in: true
+
+    # Install Nginx
+    - role: ryanlelek.nginx
+      # Redirect (301 Permanent) if a domain does not match
+      redirect_url: http://www.ansibletutorials.com
+
+    # Install Node.js
+    - nodesource.node
