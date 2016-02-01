@@ -10,7 +10,7 @@
 
 
 [digitalocean]
-raneto.yourdomain.com  ansible_ssh_user=ansible
+raneto.ryanlelek.com  ansible_ssh_user=ansible
 
 
 # Now we specify another group called "web"
@@ -25,7 +25,7 @@ raneto.yourdomain.com  ansible_ssh_user=ansible
 
 
 [web]
-raneto.yourdomain.com
+raneto.ryanlelek.com
 
 
 # This is another group named "raneto"
@@ -35,4 +35,7 @@ raneto.yourdomain.com
 
 
 [raneto]
-raneto.yourdomain.com
+raneto.ryanlelek.com
+
+[parse]
+raneto.ryanlelek.com
