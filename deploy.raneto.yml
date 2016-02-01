@@ -1,7 +1,7 @@
 ---
 
 - name: Raneto
-  hosts: raneto
+  hosts: raneto:&web
   roles:
 
     # Clone Raneto Application Repository
@@ -15,10 +15,11 @@
     # Deploy Keys or you will be denied permission to clone.
     # NEVER SHARE YOUR PRIVATE KEY WITH ANYONE
     - role: ryanlelek.git-repo
-      git_repo_url:              https://github.com/gilbitron/Raneto.git
       git_repo_name:             raneto
+      git_repo_url:              https://github.com/gilbitron/Raneto.git
       #git_repo_ssh_private_key: ./keys/id_rsa
       #git_repo_ssh_public_key:  ./keys/id_rsa.pub
+      git_repo_command:          npm install
 
     # Generate the Nginx site configuration
     # Proxy any non-static file request to Node.js

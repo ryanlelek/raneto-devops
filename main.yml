@@ -5,4 +5,4 @@
 # in any command where you would use "main.yml"
 - include: provision.all.yml
 - include: provision.web.yml
-- include: deploy.yml
+- include: deploy.raneto.yml
