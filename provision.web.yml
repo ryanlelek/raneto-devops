@@ -20,3 +20,6 @@
 
     # Install Node.js
     - nodesource.node
+
+    # Install MongoDB (Temporary)
+    - ryanlelek.mongodb
