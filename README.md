@@ -56,6 +56,8 @@ If you have any problems or questions, open an issue and I'll help you.
 Here's a shorter version that does the same thing:  
 `$ ansible-playbook -i inventory/ -K main.yml`
 
+The default sudo password is `ansible`
+
 ## 4) Adding your Raneto repository
 See the new [Raneto example](https://github.com/gilbitron/Raneto/tree/master/example) for how to structure your project.  
 It's a good idea to start a new Git repository (public or private) and commit your documentation files to that repository instead of directly to a cloned copy of Raneto.  
