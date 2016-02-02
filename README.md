@@ -17,7 +17,8 @@ If you like what you see, I'd suggest following me on my profile and/or sending 
 ## Local Applications
 1. [VirtualBox v5.0.14](https://www.virtualbox.org/wiki/Downloads)
 2. [Vagrant v1.8.1](https://www.vagrantup.com/downloads.html)
-3. Vagrant Image: ubuntu/trusty64 (virtualbox, 20160122.0.0)
+3. Vagrant Image: ubuntu/trusty64 (virtualbox, 20160127.0.0)  
+`vagrant box add ubuntu/trusty64`
 4. [Homebrew](http://brew.sh/)
 5. Ansible v2.0.0.2 installed with Homebrew:  
 `$ brew install ansible`
